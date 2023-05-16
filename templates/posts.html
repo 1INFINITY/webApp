@@ -8,13 +8,17 @@ All site posts
 {% block body %}
 <div class="container mt-5">
     <h1>Все статьи</h1>
-    {% for a in articles %}
-    <div class="alert alert-info">
-        <h2>{{ a.title }}</h2>
-        <p>{{ a.intro }}</p>
-        <p><b>Дата: {{ a.date.date() }}</b></p>
-        <a href="/posts/{{ a.id }}" class="btn btn-warning">Читать</a>
-    </div>
-    {% endfor %}
+    {% if articles|length > 0 %}
+        {% for a in articles %}
+        <div class="alert alert-info">
+            <h2>{{ a.title }}</h2>
+            <p>{{ a.intro }}</p>
+            <p><b>Дата: {{ a.date.date() }}</b></p>
+            <a href="/posts/{{ a.id }}" class="btn btn-warning">Читать</a>
+        </div>
+        {% endfor %}
+    {% else %}
+    <p>У нас еще нет статей на сайте</p>
+    {% endif %}
 </div>
 {% endblock %}
