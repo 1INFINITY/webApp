@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Registration
+{% endblock %}
+
+{% block header %}
+<style>
+        html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.first-password {
+  margin-bottom: -1px;
+  border-radius: 0;
+}
+.repeat-password {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
+
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+<main class="form-signin w-100 m-auto">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-info">
+        {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+    </div>
+    {% endif %}
+    {% endwith %}
+    <form class="text-center" method="post">
+        <a href="/" class="align-items-center link-body-emphasis text-decoration-none ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="48" class="me-2" viewBox="0 0 118 94"
+                 role="img"><title>Bootstrap</title>
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"
+                      fill="currentColor"></path>
+            </svg>
+        </a>
+        <h1 class="h3 mb-3 mt-3 fw-normal">Please sign up</h1>
+
+        <div class="form-floating">
+            <input type="text" class="form-control" name="floatingInput" id="floatingInput" placeholder="Name">
+            <label for="floatingInput">Name</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control first-password" name="floatingPassword" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control repeat-password" name="floatingPasswordRepeat" id="floatingPasswordRepeat"
+                   placeholder="Password">
+            <label for="floatingPasswordRepeat">Password</label>
+        </div>
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+        <p class="mt-2">Already have an account? <a href="/login">Login</a></p>
+        <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
+    </form>
+</main>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
