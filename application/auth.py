@@ -1,5 +1,5 @@
 from flask import Blueprint, flash
-from flask_login import login_user
+from flask_login import login_user, logout_user, login_required
 from application.models import User
 from application import db
 from flask import Flask, render_template, url_for, request, redirect
@@ -43,21 +43,22 @@ def login():
     if request.method == "POST":
         name = request.form['floatingInput']
         password = request.form['floatingPassword']
-        if name and password:
-            user = User.query.filter_by(name=name).first()
+        remember = True if request.form.get('rememberInput') else False
 
-            if check_password_hash(user.password, password):
-                login_user(user)
-        try:
-            db.session.add(article)
-            db.session.commit()
-            return redirect('/')
-        except:
-            return "При добавлении статьи произошла ошибка"
-    else:
-        return render_template("sign_in.html")
+        if name and password and name != '' and password != '':
+            user = User.query.filter_by(name=name).first()
+            if user and check_password_hash(user.password, password):
+                login_user(user, remember=remember)
+                return redirect(url_for('main.hello'))
+            else:
+                flash('Name or password is incorrect')
+        else:
+            flash('Please fill all fields!')
+    return render_template("sign_in.html")
 
 
 @auth.route('/logout')
+@login_required
 def logout():
+    logout_user()
     return 'Logout'

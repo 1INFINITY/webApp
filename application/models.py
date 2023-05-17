@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask_login import UserMixin
-from application import db
+from application import db, manager
+
 
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -18,3 +19,8 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(300), nullable=False)
     def __repr__(self):
         return '<User %r>' % self.id
+
+
+@manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)

@@ -44,7 +44,14 @@ Login
 {% block body %}
 
 <main class="form-signin w-100 m-auto">
-    <form class="text-center">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-info">
+        {{ messages[0] }}. Go to <a href="{{ url_for('auth.register') }}">register page</a>.
+    </div>
+    {% endif %}
+    {% endwith %}
+    <form class="text-center" method="post">
         <a href="/" class="align-items-center link-body-emphasis text-decoration-none ">
             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="48" class="me-2" viewBox="0 0 118 94"
                  role="img"><title>Bootstrap</title>
@@ -55,17 +62,17 @@ Login
         </a>
         <h1 class="h3 mb-3 mt-3 fw-normal">Please sign in</h1>
 
-        <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput" placeholder="Name">
-            <label for="floatingInput">Email address</label>
+         <div class="form-floating">
+            <input type="text" class="form-control" name="floatingInput" id="floatingInput" placeholder="Name">
+            <label for="floatingInput">Name</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control first-password" id="floatingPassword" placeholder="Password">
+            <input type="password" class="form-control first-password" name="floatingPassword" id="floatingPassword" placeholder="Password">
             <label for="floatingPassword">Password</label>
         </div>
-        <div class="checkbox mb-3 mt-2">
+        <div class="checkbox mb-3">
             <label>
-                <input type="checkbox" value="remember-me"> Remember me
+                <input type="checkbox" name="rememberInput" value="rememberInput"> Remember me
             </label>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>

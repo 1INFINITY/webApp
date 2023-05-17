@@ -1,5 +1,5 @@
 from flask import Blueprint
-
+from flask_login import login_required, current_user
 from application.models import Article
 from application import db
 from flask import Flask, render_template, url_for, request, redirect
@@ -7,8 +7,9 @@ from flask import Flask, render_template, url_for, request, redirect
 main = Blueprint('main', __name__)
 
 @main.route('/hello')
+@login_required
 def hello():
-    return "Hello, World!"
+    return f"Hello, {current_user.name}!"
 
 
 @main.route('/')
