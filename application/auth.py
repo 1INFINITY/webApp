@@ -1,7 +1,7 @@
 from flask import Blueprint, flash
 from flask_login import login_user
-from .models import User
-from .__init__ import db
+from application.models import User
+from application import db
 from flask import Flask, render_template, url_for, request, redirect
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -11,31 +11,32 @@ auth = Blueprint('auth', __name__)
 @auth.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == "POST":
-        flash('Start')
         name = request.form['floatingInput']
         password = request.form['floatingPassword']
         password_repeat = request.form['floatingPasswordRepeat']
-        if not (name or password or password_repeat):
+        if not (name and password and password_repeat):
             flash('Please fill all fields!')
         elif password != password_repeat:
             flash('Passwords are different')
+        else:
+            # if this returns a user, then the email already exists in database
+            user = User.query.filter_by(name=name).first()
 
-        user = User.query.filter_by(name=name).first()  # if this returns a user, then the email already exists in database
+            if user:
+                # if a user is found, we want to redirect back to signup page so user can try again
+                flash('This username is already exists')
+                return redirect(url_for('auth.register'))
 
-        if user:
-            flash('Email address already exists')  # if a user is found, we want to redirect back to signup page so user can try again
-            return redirect(url_for('auth.signup'))
+            # create a new user with the form data. Hash the password so the plaintext version isn't saved.
+            new_user = User(name=name, password=generate_password_hash(password, method='sha256'))
 
-        # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-        new_user = User(name=name, password=generate_password_hash(password, method='sha256'))
+            # add the new user to the database
+            db.session.add(new_user)
+            db.session.commit()
 
-        # add the new user to the database
-        db.session.add(new_user)
-        db.session.commit()
+            return redirect(url_for('auth.login'))
+    return render_template("sign_up.html")
 
-        return redirect(url_for('auth.login'))
-    else:
-        return render_template("sign_up.html")
 
 @auth.route('/login', methods=['POST', 'GET'])
 def login():

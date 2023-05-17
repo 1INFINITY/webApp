@@ -1,7 +1,7 @@
 from flask import Blueprint
 
-from .models import Article
-from .__init__ import db
+from application.models import Article
+from application import db
 from flask import Flask, render_template, url_for, request, redirect
 
 main = Blueprint('main', __name__)
