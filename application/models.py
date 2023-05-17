@@ -7,6 +7,12 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(300), nullable=False)
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'password': self.password
+        }
     def __repr__(self):
         return '<User %r>' % self.id
 
@@ -21,6 +27,15 @@ class Article(db.Model):
     user = db.relationship(User, backref='users')
 
     comments = db.relationship('Comment', lazy=True)
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'intro': self.intro,
+            'text': self.text,
+            'date': self.date,
+            'user_id': self.user_id
+        }
     def __repr__(self):
         return '<Article %r>' % self.id
 
@@ -33,6 +48,15 @@ class Comment(db.Model):
     user = db.relationship(User)
 
     article_id = db.Column(db.ForeignKey(Article.id))
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'message': self.message,
+            'date': self.date,
+            'user_id': self.user_id,
+            'article_id': self.article_id
+        }
     def __repr__(self):
         return '<Comment %r>' % self.id
 @manager.user_loader
