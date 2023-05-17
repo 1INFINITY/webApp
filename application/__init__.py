@@ -12,16 +12,16 @@ db = SQLAlchemy(app)
 manager = LoginManager(app)
 manager.login_view = 'auth.login'
 
-# blueprint for auth routes in our app
 from application.auth import auth as auth_blueprint
 
 app.register_blueprint(auth_blueprint)
 
-# blueprint for non-auth parts of app
 from application.main import main as main_blueprint
 
 app.register_blueprint(main_blueprint)
 
+
 app.app_context().push()
 db.create_all()
+#db.drop_all()
 app.run()

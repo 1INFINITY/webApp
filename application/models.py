@@ -19,10 +19,22 @@ class Article(db.Model):
 
     user_id = db.Column(db.ForeignKey(User.id))
     user = db.relationship(User, backref='users')
+
+    comments = db.relationship('Comment', lazy=True)
     def __repr__(self):
         return '<Article %r>' % self.id
 
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.String(300), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow())
 
+    user_id = db.Column(db.ForeignKey(User.id), nullable=False)
+    user = db.relationship(User)
+
+    article_id = db.Column(db.ForeignKey(Article.id))
+    def __repr__(self):
+        return '<Comment %r>' % self.id
 @manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
