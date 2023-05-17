@@ -61,4 +61,4 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return 'Logout'
+    return redirect(url_for('main.index'))

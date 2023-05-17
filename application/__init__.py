@@ -23,6 +23,5 @@ from application.main import main as main_blueprint
 app.register_blueprint(main_blueprint)
 
 app.app_context().push()
-db.drop_all()
 db.create_all()
 app.run()

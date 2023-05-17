@@ -9,7 +9,7 @@ main = Blueprint('main', __name__)
 @main.route('/hello')
 @login_required
 def hello():
-    return f"Hello, {current_user.name}!"
+    return render_template("hello.html", name=current_user.name)
 
 
 @main.route('/')
@@ -30,6 +30,7 @@ def post_details(id):
 
 
 @main.route('/posts/<int:id>/delete')
+@login_required
 def post_delete(id):
     article = Article.query.get_or_404(id)
     try:
@@ -41,6 +42,7 @@ def post_delete(id):
 
 
 @main.route('/posts/<int:id>/update', methods=['POST', 'GET'])
+@login_required
 def post_update(id):
     article = Article.query.get(id)
     if request.method == "POST":
@@ -57,13 +59,14 @@ def post_update(id):
 
 
 @main.route('/create-article', methods=['POST', 'GET'])
+@login_required
 def create_article():
     if request.method == "POST":
         title = request.form['title']
         intro = request.form['intro']
         text = request.form['text']
 
-        article = Article(title=title, intro=intro, text=text)
+        article = Article(title=title, intro=intro, text=text, user_id=current_user.id)
 
         try:
             db.session.add(article)
